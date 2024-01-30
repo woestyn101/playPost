@@ -28,7 +28,8 @@ const getData = () =>
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(note),
-  });
+  }).then(res => res.json())
+  .then(res => console.log(res));
 
  
  getData().then((response) => response.forEach((information) => renderData(information)));
