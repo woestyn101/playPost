@@ -21,8 +21,16 @@ const getData = () =>
     divE.appendChild(divPerson);          
  }
 
+ const saveNote = (note) =>
+  fetch('/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(note),
+  });
 
-
+ 
  getData().then((response) => response.forEach((information) => renderData(information)));
 
  submitBtn.addEventListener("click", showInput);
@@ -35,22 +43,18 @@ const getData = () =>
         title: userTitle.value,
         person: userPerson.value
     }
-    postingData(newdata);
+
+    console.log(newdata.title);
+    console.log(newdata.person);
+
+  saveNote(newdata);
+    
+
    
-   
+       
    
  }
 
- function postingData(data){
-// using fetch to post new data
-fetch("/new", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-
- }
+ 
  
  

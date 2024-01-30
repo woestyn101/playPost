@@ -31,35 +31,46 @@ app.get('/api', (req, res) => {
   res.json(noteData);
 })
 
-
-app.post('/new', (req, res) => {
-  
-  // Access the data sent in the POST request
-  const postData = req.body;
-    
-  // Do something with the data
-  console.log(postData);
-  console.log(postData.title);
-  console.log(postData.person);
- 
-
-  // Read existing JSON file
-  const dbJson = JSON.parse(fs.readFileSync("./public/db/db.json","utf8"));
-
-    // Add new data to existing JSON object
-    dbJson.push(postData);
-
-    // Write updated JSON data back to file
-    
-
- // Write JSON data to a file
- 
- fs.writeFileSync("./public/db/db.json",JSON.stringify(dbJson));
- res.json(dbJson);
- 
+// POST method route
+app.post('/', (req, res) => {
+    const newData = req.body;
+  res.send(newData);
+ // res.send('POST request to the homepage')
+ fs.readFile('./public/db/db.json', (err, data) => {
+  if (err) throw err;
+  var olddata = JSON.parse(data);
+  console.log(typeof(olddata));
+  console.log(typeof(newData));
+  olddata.push(newData);
+  console.log(olddata);
+  writeNewfile(olddata);
 });
 
-// listen() method is responsible for listening for incoming connections on the specified port 
-app.listen(PORT, () =>
-  console.log(`Example app listening at http://localhost:${PORT}`)
-);
+// Write the updated data back to the file
+function writeNewfile (olddata) {
+
+  fs.writeFile('./public/db/db.json', JSON.stringify(olddata), (err) => {
+    if (err) {
+        console.error(err);
+        //res.status(500).send('Error writing file');
+       
+    }
+   
+   
+    console.log("data saved");
+          
+  
+   
+  });
+  
+} 
+
+
+ 
+})
+
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
+
