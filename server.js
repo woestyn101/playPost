@@ -41,48 +41,23 @@ app.post('/new', (req, res) => {
   console.log(postData);
   console.log(postData.title);
   console.log(postData.person);
-  res.json(`${req.method} request received`);
+ 
 
   // Read existing JSON file
-  fs.readFile('./public/db/db.json', 'utf8', (err, data) => {
-    if (err) {
-        console.error(err);
-        return res.status(500).send('Error reading file');
-    }
-
-    // Parse existing JSON data
-    let jsonData = JSON.parse(data);
+  const dbJson = JSON.parse(fs.readFileSync("./public/db/db.json","utf8"));
 
     // Add new data to existing JSON object
-    jsonData.push(postData);
+    dbJson.push(postData);
 
     // Write updated JSON data back to file
-    fs.writeFile('./public/db/db.json', JSON.stringify(jsonData, null, 2), (err) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send('Error writing to file');
-        }
-        // res.send('Data added successfully');
-        console.log("Data added successfully");
-      
-        return;
-    });
-});
- // Write JSON data to a file
-//  fs.writeFile('./public/db/db.json', JSON.stringify(postData), err => {
-//   if (err) {
-//     console.error('Error writing to file:', err);
-//     res.status(500).send('Error writing to file');
-//     return;
-//   }
-//   console.log('Data written to file successfully');
-//   res.send('Data written to file successfully');
-// });
-  
- 
-}
+    
 
-);
+ // Write JSON data to a file
+ 
+ fs.writeFileSync("./public/db/db.json",JSON.stringify(dbJson));
+ res.json(dbJson);
+ 
+});
 
 // listen() method is responsible for listening for incoming connections on the specified port 
 app.listen(PORT, () =>
