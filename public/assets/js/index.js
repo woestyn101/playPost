@@ -49,17 +49,7 @@ fetch("/new", {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
-  }).then((res) => {
-    return res.json();
-    
-})
-  
-    .catch((error) => {
-      console.error(
-        "There was a problem with the fetch operation:",
-        error
-      );
-    });
+  })
 
  }
  
