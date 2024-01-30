@@ -53,15 +53,7 @@ fetch("/new", {
     return res.json();
     
 })
-.then((data) => {
-   
-  return data;
-    //console.log("yes");
-    
- 
-})
-    
-    
+  
     .catch((error) => {
       console.error(
         "There was a problem with the fetch operation:",
