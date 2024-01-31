@@ -3,6 +3,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 
+
+
 // Import built-in Node.js package 'path' to resolve path of files that are located on the server
 const path = require('path');
 
@@ -10,8 +12,8 @@ const path = require('path');
 const app = express();
 
 // Middleware to parse incoming request bodies
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
 
 // Specify on which port the Express.js server will run
 const PORT = process.env.PORT || 3006;
@@ -27,11 +29,11 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/index.html'))
 })
 
-app.get('/api', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/notes.html'))
-  //res.json(noteData);
-})
 
+app.get('/api', (req, res) => {
+  const dbJson = JSON.parse(fs.readFileSync("db/db.json","utf8"));
+  res.json(dbJson);
+})
 
 
 // POST method route
@@ -44,6 +46,7 @@ app.post('/api', (req, res) => {
     person: req.body.person,
     
   };
+  
   dbJson.push(newFeedback);
   fs.writeFileSync("db/db.json",JSON.stringify(dbJson));
   res.json(dbJson);
