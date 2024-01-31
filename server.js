@@ -10,7 +10,7 @@ const path = require('path');
 const app = express();
 
 // Middleware to parse incoming request bodies
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Specify on which port the Express.js server will run
