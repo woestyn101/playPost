@@ -5,12 +5,7 @@ var submitBtn = document.getElementById("submitBtn");
 var userTitle = document.getElementById("userTitle");
 var userPerson = document.getElementById("userPerson");
 
-const getData = () =>
-  fetch('/api', {
-    method: 'GET',
-  })
-    .then((res) => res.json())
-    .then((data) => data);
+
 
  function renderData(data)   {
     var divTitle = document.createElement("div");
@@ -21,15 +16,26 @@ const getData = () =>
     divE.appendChild(divPerson);          
  }
 
- const saveNote = (note) =>
-  fetch('/', {
+ const getData = () =>
+ fetch('/api', {
+   method: 'GET',
+ })
+   .then((res) => res.json())
+   .then((data) => data);
+
+ const saveNote = (note)=>
+  fetch('/api', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(note),
-  }).then(res => res.json())
-  .then(res => console.log(res));
+  });
+  
+ 
+   
+ 
+ 
 
  
  getData().then((response) => response.forEach((information) => renderData(information)));
@@ -49,13 +55,11 @@ const getData = () =>
     console.log(newdata.person);
 
   saveNote(newdata);
-    
 
-   
+  
        
    
  }
 
- 
  
  

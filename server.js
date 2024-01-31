@@ -15,9 +15,9 @@ app.use(bodyParser.json());
 
 // Specify on which port the Express.js server will run
 const PORT = process.env.PORT || 3006;
-
+app.use(express.json());
 //importing db.json file
-const noteData = require('./public/db/db.json');
+const noteData = require('./db/db.json');
 
 // Static middleware pointing to the public folder
 app.use(express.static('public'));
@@ -31,43 +31,51 @@ app.get('/api', (req, res) => {
   res.json(noteData);
 })
 
+
+
 // POST method route
-app.post('/', (req, res) => {
-    const newData = req.body;
-  res.send(newData);
- // res.send('POST request to the homepage')
- fs.readFile('./public/db/db.json', (err, data) => {
-  if (err) throw err;
-  var olddata = JSON.parse(data);
-  console.log(typeof(olddata));
-  console.log(typeof(newData));
-  olddata.push(newData);
-  console.log(olddata);
-  writeNewfile(olddata);
-});
+app.post('/api', (req, res) => {
 
-// Write the updated data back to the file
-function writeNewfile (olddata) {
+  //copied code:
+  const dbJson = JSON.parse(fs.readFileSync("db/db.json","utf8"));
+  const newFeedback = {
+    title: req.body.title,
+    person: req.body.person,
+    
+  };
+  dbJson.push(newFeedback);
+  fs.writeFileSync("db/db.json",JSON.stringify(dbJson));
+  res.json(dbJson);
 
-  fs.writeFile('./public/db/db.json', JSON.stringify(olddata), (err) => {
-    if (err) {
-        console.error(err);
-        //res.status(500).send('Error writing file');
+  // end of copied code
+
+      //    var dbJson =  fs.readFile('./db/db.json', (err, data) => {
+      //       thedata = JSON.parse(data)
+      //        console.log(thedata);        
+      //   });
+
+
+      //    var newFeedback = {
+      //   title: req.body.title,
+      //   person: req.body.person,
        
-    }
-   
-   
-    console.log("data saved");
-          
-  
-   
-  });
-  
-} 
+      // };
+      // console.log(newFeedback);
+      // console.log(dbJson);
+     
 
+      
+      
+      // function writeNewFile (allnewdata) { 
+      //   fs.writeFile('./db/db.json', JSON.stringify(allnewdata), (err) => {
+      //     if (err) throw err;
+      //     console.log('The file has been saved!');
+      //   });
 
- 
-})
+      //  }
+     
+    
+      })//end post
 
 
 app.listen(PORT, () => {
