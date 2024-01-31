@@ -21,7 +21,8 @@ var userPerson = document.getElementById("userPerson");
    method: 'GET',
  })
    .then((res) => res.json())
-   .then((data) => data);
+   .then((data) => data)
+   .catch((err)=>console.log(err));
 
  const saveNote = (note)=>
   fetch('/api', {
@@ -30,8 +31,14 @@ var userPerson = document.getElementById("userPerson");
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(note),
-  });
+  })
   
+
+  // fetch function returns a Promise Object
+  
+  // .then(res=>res.json())
+    
+   
  
    
  
@@ -51,11 +58,40 @@ var userPerson = document.getElementById("userPerson");
         person: userPerson.value
     }
 
-    console.log(newdata.title);
+    console.log(newdata.title); 
     console.log(newdata.person);
 
-  saveNote(newdata);
+    saveNote(newdata).then(data=>data.json()).then(responseData => {
+      divE.innerHTML = ""
+      responseData.forEach((information) => renderData(information))
+    }).catch((err)=> console.log(err))
+    
+    
+    // fetch('/api', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(note),
+    // }).then(data=>data.json()).then(responseData => console.log(responseData))
 
+  // console.log("***** PENDING PROMISE *******");
+  // console.log(promiseData);
+
+  // let resolvedPendingPromise = promiseData.then(data=>data.json());
+  
+  // console.log("****** FULFILLED PROMISE *******");
+  // console.log(resolvedPendingPromise);
+
+  // let actualData = resolvedPendingPromise.then(responseData => console.log(responseData))
+
+  // console.log(actualData);
+  // .then(data=>{
+  //   divE.innerHTML = ""
+  //   data.forEach((information) => renderData(information))
+  // }
+// )
+    // .catch(err=>console.log(err));
   
        
    
